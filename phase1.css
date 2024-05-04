@@ -1,47 +1,120 @@
+/* Adding more creativity to your CSS */
+
+/* Global Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f0f0f0;
+    background-image: linear-gradient(to bottom right, #f0f0f0, #cfd9df);
+    color: #333;
 }
 
+/* Container Styles */
 .container {
     max-width: 800px;
     margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
 }
 
+/* Heading Styles */
 h1 {
     text-align: center;
+    color: #007bff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+    font-size: 36px;
 }
 
+/* Textarea Styles */
 textarea {
-    width: 100%;
+    width: calc(100% - 40px);
     height: 200px;
-    margin-bottom: 10px;
-    padding: 10px;
+    margin: 0 auto;
+    display: block;
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid #007bff;
+    background-color: rgba(240, 248, 255, 0.8);
+    font-size: 16px;
+    resize: none;
 }
 
+/* Button Styles */
 button {
-    padding: 10px 20px;
+    padding: 15px 30px;
     background-color: #007bff;
     color: #fff;
     border: none;
-    border-radius: 4px;
+    border-radius: 10px;
     cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    transition: background-color 0.3s ease;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    outline: none;
 }
 
 button:hover {
     background-color: #0056b3;
 }
 
+/* Output Styles */
 #output {
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #f9f9f9;
+    margin-top: 30px;
+    padding: 20px;
+    border: 2px solid #007bff;
+    border-radius: 20px;
+    background-color: rgba(240, 248, 255, 0.9);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+    position: relative;
+}
+
+/* Customizing the Scrollbar */
+#output::-webkit-scrollbar {
+    width: 12px;
+}
+
+#output::-webkit-scrollbar-thumb {
+    background-color: #007bff;
+    border-radius: 10px;
+}
+
+#output::-webkit-scrollbar-track {
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* Adding some decorative elements */
+.container:before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, #007bff 0%, #007bff 30%, transparent 50%);
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.container:after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, #007bff 0%, #007bff 30%, transparent 50%);
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: -1;
 }
