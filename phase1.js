@@ -20,10 +20,70 @@ function scan() {
             output.innerHTML += `(reserved, '${token}')<br>`;
         } else if (/^[a-zA-Z]+$/.test(token)) {
             output.innerHTML += `(variable, '${token}')<br>`;
-        } else if (/^[\+\-\/\%\*]$/.test(token)) {
-            output.innerHTML += `(operator, '${token}')<br>`;
-        } else if (/^[\(\{\[\)\}\]\,\;]$/.test(token)) {
-            output.innerHTML += `(symbol, '${token}')<br>`;
+        } else if (/^[\+\-\*\/\%\(\)\{\}\[\],\;\&\|<>=!]$/.test(token)) {
+            // Handle symbols individually with a creative approach
+            switch(token) {
+                case '+':
+                    output.innerHTML += `(symbol, 'plus ➕')<br>`;
+                    break;
+                case '-':
+                    output.innerHTML += `(symbol, 'minus ➖')<br>`;
+                    break;
+                case '*':
+                    output.innerHTML += `(symbol, 'multiply ✖️')<br>`;
+                    break;
+                case '/':
+                    output.innerHTML += `(symbol, 'divide ➗')<br>`;
+                    break;
+                case '%':
+                    output.innerHTML += `(symbol, 'modulo %')<br>`;
+                    break;
+                case '(':
+                    output.innerHTML += `(symbol, 'open parenthesis (')<br>`;
+                    break;
+                case ')':
+                    output.innerHTML += `(symbol, 'close parenthesis )')<br>`;
+                    break;
+                case '{':
+                    output.innerHTML += `(symbol, 'open curly bracket {')<br>`;
+                    break;
+                case '}':
+                    output.innerHTML += `(symbol, 'close curly bracket }')<br>`;
+                    break;
+                case '[':
+                    output.innerHTML += `(symbol, 'open square bracket [')<br>`;
+                    break;
+                case ']':
+                    output.innerHTML += `(symbol, 'close square bracket ]')<br>`;
+                    break;
+                case ',':
+                    output.innerHTML += `(symbol, 'comma ,')<br>`;
+                    break;
+                case ';':
+                    output.innerHTML += `(symbol, 'semicolon ;')<br>`;
+                    break;
+                case '&':
+                    output.innerHTML += `(symbol, 'AND &&')<br>`;
+                    break;
+                case '|':
+                    output.innerHTML += `(symbol, 'OR ||')<br>`;
+                    break;
+                case '<':
+                    output.innerHTML += `(symbol, 'less than <')<br>`;
+                    break;
+                case '>':
+                    output.innerHTML += `(symbol, 'greater than >')<br>`;
+                    break;
+                case '=':
+                    output.innerHTML += `(symbol, 'equal =')<br>`;
+                    break;
+                case '!':
+                    output.innerHTML += `(symbol, 'NOT !')<br>`;
+                    break;
+                default:
+                    output.innerHTML += `(unknown, '${token}')<br>`;
+                    break;
+            }
         } else {
             output.innerHTML += `(unknown, '${token}')<br>`;
         }
