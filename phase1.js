@@ -1,7 +1,7 @@
 function scan() {
     var inputCode = document.getElementById("input").value;
-    // Updated regular expression to capture whole words, symbols, and individual characters
-    var tokenList = inputCode.match(/('[^'\n]*')|#.+\n|\b(int|float|string|double|bool|char|for|while|if|do|return|break|continue|end)\b|\b\d+(\.\d+)?\b|\S|;/g);
+    // Updated regular expression to capture multi-character tokens
+    var tokenList = inputCode.match(/('[^'\n]*')|#.+\n|\b(int|float|string|double|bool|char|for|while|if|do|return|break|continue|end)\b|\b\d+(\.\d+)?\b|[a-zA-Z]+|\S|;/g);
 
     var output = document.getElementById("output");
     output.innerHTML = "";
@@ -11,7 +11,7 @@ function scan() {
         return;
     }
 
-    tokenList.forEach(function(token) {
+    tokenList.forEach(function(token, index) {
         if (/^(\d+(\.\d+)?)$/.test(token)) {
             output.innerHTML += `(number, '${token}')<br>`;
         } else if (/^(int|float|string|double|bool|char)$/.test(token)) {
@@ -20,6 +20,10 @@ function scan() {
             output.innerHTML += `(reserved, '${token}')<br>`;
         } else if (/^[a-zA-Z]+$/.test(token)) {
             output.innerHTML += `(variable, '${token}')<br>`;
+        } else if(token === '||'){
+            output.innerHTML += `(symbol, 'OR ||')<br>`;
+        } else if (token === '&&') {
+            output.innerHTML += `(symbol, 'AND &&')<br>`;
         } else if (/^[\+\-\*\/\%\(\)\{\}\[\],\;\&\|<>=!]$/.test(token)) {
             // Handle symbols individually with a creative approach
             switch(token) {
@@ -61,12 +65,6 @@ function scan() {
                     break;
                 case ';':
                     output.innerHTML += `(symbol, 'semicolon ;')<br>`;
-                    break;
-                case '&':
-                    output.innerHTML += `(symbol, 'AND &&')<br>`;
-                    break;
-                case '|':
-                    output.innerHTML += `(symbol, 'OR ||')<br>`;
                     break;
                 case '<':
                     output.innerHTML += `(symbol, 'less than <')<br>`;
