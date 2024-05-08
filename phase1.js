@@ -1,3 +1,9 @@
+function speak(text) {
+    var synth = window.speechSynthesis;
+    var utterance = new SpeechSynthesisUtterance(text);
+    synth.speak(utterance);
+}
+
 function scan() {
     var inputCode = document.getElementById("chatbox").value;
     // Replace && with "AND" and || with "OR" without spaces
@@ -49,5 +55,6 @@ function scan() {
     table += "</table>";
 
     // Display the table
-    output.innerHTML = "<b>Chatbot:</b> " + table;
+    output.innerHTML = "<b>Chatbot:</b> The results are" + table;
+    speak("The results are.");
 }
