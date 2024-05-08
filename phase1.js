@@ -1,10 +1,7 @@
-function speak(text) {
-    const utterance = new SpeechSynthesisUtterance(text);
-    window.speechSynthesis.speak(utterance);
-}
-
 function scan() {
     var inputCode = document.getElementById("chatbox").value;
+    // Replace && with "AND" and || with "OR" without spaces
+    inputCode = inputCode.replace(/&&/g, "AND").replace(/\|\|/g, "OR");
     var tokenList = inputCode.match(/('[^'\n]*')|#.+\n|\b(int|float|string|double|bool|char|for|while|if|do|return|break|continue|end)\b|\b\d+(\.\d+)?\b|[a-zA-Z]+|\S|;/g);
     var output = document.getElementById("chatlog1");
     output.innerHTML = "";
@@ -15,104 +12,42 @@ function scan() {
         return;
     }
 
-    output.innerHTML += `<b>Chatbot:</b> `;
+    // Create a table
+    var table = "<table border='1'>";
+    var categories = {
+        "<b>Numbers:</b>": [],
+        "<b>Identifiers:</b>": [],
+        "<b>Reserved Keywords:</b>": [],
+        "<b>Variables:</b>": [],
+        "<b>Symbols:</b>": [],
+        "<b>Unknown:</b>": []
+    };
+
+    // Organize tokens into categories
     tokenList.forEach(function(token, index) {
         if (/^(\d+(\.\d+)?)$/.test(token)) {
-            output.innerHTML += `number = '${token}'<br>`;
-            speak("number " + token);
+            categories["<b>Numbers:</b>"].push(token);
         } else if (/^(int|float|string|double|bool|char)$/.test(token)) {
-            output.innerHTML += `identifier = '${token}'<br>`;
-            speak("identifier " + token);
+            categories["<b>Identifiers:</b>"].push(token);
         } else if (/^(for|while|if|do|return|break|continue|end)$/.test(token)) {
-            output.innerHTML += `reserved = '${token}'<br>`;
-            speak("reserved " + token);
+            categories["<b>Reserved Keywords:</b>"].push(token);
         } else if (/^[a-zA-Z]+$/.test(token)) {
-            output.innerHTML += `variable = '${token}'<br>`;
-            speak("variable " + token);
-        } else if (token === '||') {
-            output.innerHTML += `symbol = 'OR ||'<br>`;
-            speak(" symbol OR");
-        } else if (token === '&&') {
-            output.innerHTML += `symbol = 'AND &&'<br>`;
-            speak(" symbol AND");
+            categories["<b>Variables:</b>"].push(token);
         } else if (/^[\+\-\*\/\%\(\)\{\}\[\],\;\&\|<>=!]$/.test(token)) {
-            switch (token) {
-                case '+':
-                    output.innerHTML += `symbol = 'plus ➕'<br>`;
-                    speak("symbol plus");
-                    break;
-                case '-':
-                    output.innerHTML += `symbol = 'minus ➖'<br>`;
-                    speak("symbol minus");
-                    break;
-                case '*':
-                    output.innerHTML += `symbol, 'multiply ✖️'<br>`;
-                    speak("symbol multiply");
-                    break;
-                case '/':
-                    output.innerHTML += `symbol = 'divide ➗'<br>`;
-                    speak("symbol divide");
-                    break;
-                case '%':
-                    output.innerHTML += `symbol = 'modulo %'<br>`;
-                    speak("symbol modulo");
-                    break;
-                case '(':
-                    output.innerHTML += `symbol = 'open parenthesis ('<br>`;
-                    speak("symbol open parenthesis");
-                    break;
-                case ')':
-                    output.innerHTML += `symbol = 'close parenthesis )'<br>`;
-                    speak("symbol close parenthesis");
-                    break;
-                case '{':
-                    output.innerHTML += `symbol = 'open curly bracket {'<br>`;
-                    speak("symbol open curly bracket");
-                    break;
-                case '}':
-                    output.innerHTML += `symbol = 'close curly bracket }'<br>`;
-                    speak("symbol close curly bracket");
-                    break;
-                case '[':
-                    output.innerHTML += `symbol = 'open square bracket ['<br>`;
-                    speak("symbol open square bracket");
-                    break;
-                case ']':
-                    output.innerHTML += `symbol = 'close square bracket ]'<br>`;
-                    speak("symbol close square bracket");
-                    break;
-                case ',':
-                    output.innerHTML += `symbol = 'comma ,'<br>`;
-                    speak("symbol comma");
-                    break;
-                case ';':
-                    output.innerHTML += `symbol = 'semicolon ;'<br>`;
-                    speak("symbol semicolon");
-                    break;
-                case '<':
-                    output.innerHTML += `symbol = 'less than <'<br>`;
-                    speak("symbol less than");
-                    break;
-                case '>':
-                    output.innerHTML += `symbol = 'greater than >'<br>`;
-                    speak("symbol greater than");
-                    break;
-                case '=':
-                    output.innerHTML += `symbol = 'equal ='<br>`;
-                    speak("symbol equal");
-                    break;
-                case '!':
-                    output.innerHTML += `symbol = 'NOT !'<br>`;
-                    speak("symbol NOT");
-                    break;
-                default:
-                    output.innerHTML += `unknown = '${token}'<br>`;
-                    speak("unknown " + token);
-                    break;
-            }
+            categories["<b>Symbols:</b>"].push(token);
         } else {
-            output.innerHTML += `unknown = '${token}'<br>`;
-            speak("unknown " + token);
+            categories["<b>Unknown:</b>"].push(token);
         }
     });
+
+    // Populate the table with categories and their tokens
+    for (const [category, tokens] of Object.entries(categories)) {
+        if (tokens.length > 0) {
+            table += "<tr><td>" + category + "</td><td>" + tokens.join(", ") + "</td></tr>";
+        }
+    }
+    table += "</table>";
+
+    // Display the table
+    output.innerHTML = "<b>Chatbot:</b> " + table;
 }
