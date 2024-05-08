@@ -39,8 +39,11 @@ function scan() {
             table += "<tr><td>number</td><td>" + token + "</td></tr>";
         } else if (/^(int|float|string|double|bool|char)$/.test(token)) {
             categories["<b>Identifiers:</b>"].push(token);
+            table += "<tr><td>Identifier</td><td>" + token + "</td></tr>";
+        } else if (/^(for|while|if|do|return|break|continue|end)$/.test(token)) {
+            categories["<b>Reserved Keywords:</b>"].push(token);
             table += "<tr><td>reserved</td><td>" + token + "</td></tr>";
-        } else if (/^[a-zA-Z]+$/.test(token)) {
+        }else if (/^[a-zA-Z]+$/.test(token)) {
             categories["<b>Variables:</b>"].push(token);
             table += "<tr><td>variable</td><td>" + token + "</td></tr>";
         } else if (token === '|' && tokenList[index + 1] === '|') {
