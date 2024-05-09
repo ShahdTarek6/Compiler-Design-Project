@@ -69,22 +69,22 @@ function scan() {
                     table += "<tr><td>symbol</td><td>modulus %</td></tr>";
                     break;
                 case '(':
-                    table += "<tr><td>symbol</td><td>left parenthesis (</td></tr>";
+                    table += "<tr><td>symbol</td><td>open parenthesis (</td></tr>";
                     break;
                 case ')':
-                    table += "<tr><td>symbol</td><td>right parenthesis )</td></tr>";
+                    table += "<tr><td>symbol</td><td>close parenthesis )</td></tr>";
                     break;
                 case '{':
-                    table += "<tr><td>symbol</td><td>left brace {</td></tr>";
+                    table += "<tr><td>symbol</td><td>open brace {</td></tr>";
                     break;
                 case '}':
-                    table += "<tr><td>symbol</td><td>right brace }</td></tr>";
+                    table += "<tr><td>symbol</td><td>close brace }</td></tr>";
                     break;
                 case '[':
-                    table += "<tr><td>symbol</td><td>left square bracket [</td></tr>";
+                    table += "<tr><td>symbol</td><td>open square bracket [</td></tr>";
                     break;
                 case ']':
-                    table += "<tr><td>symbol</td><td>right square bracket ]</td></tr>";
+                    table += "<tr><td>symbol</td><td>close square bracket ]</td></tr>";
                     break;
                 case ',':
                     table += "<tr><td>symbol</td><td>comma ,</td></tr>";
