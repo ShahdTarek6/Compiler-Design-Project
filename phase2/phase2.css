@@ -1,0 +1,147 @@
+body {
+    font: 15px arial, sans-serif;
+    background-color: #d9d9d9;
+    padding-top: 100px;
+    padding-bottom: 15px;
+   
+  }
+  
+  #bodybox {
+    margin: auto;
+    max-width: 550px;
+    font: 15px arial, sans-serif;
+    background-color: rgb(255, 153, 236, 0.5) ;
+    border-style: solid;
+    border-width: 3px;
+    padding-top: 20px;
+    padding-bottom: 25px;
+    padding-right: 25px;
+    padding-left: 25px;
+    box-shadow: 5px 5px 5px rgb(244, 220, 44);
+    border-radius: 15px;
+  }
+  
+  #chatborder {
+    border-style: solid;
+    background-color: rgb(107, 252, 223);
+    border-width: 3px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    padding-right: 20px;
+    padding-left: 15px;
+    border-radius: 15px;
+  }
+  
+  .chatlog {
+     font: 15px arial, sans-serif;
+  }
+  
+  #chatbox {
+    font: 17px arial, sans-serif;
+    height: 22px;
+    width: 100%;
+  }
+  
+  h1 {
+    margin: 0; 
+    text-align: center; 
+    color: white; 
+    text-shadow: 2px 2px 4px rgb(244, 220, 44); 
+  }
+  
+  pre {
+    background-color: #f0f0f0;
+    margin-left: 20px;
+  }
+
+  ul {
+    list-style-type: none; 
+    padding: 0; 
+    margin: 0; 
+    display: flex; 
+    justify-content: center; 
+}
+
+  button {
+    padding: 15px 30px;
+    background-color: rgb(17, 255, 207);
+    color: #000000;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    transition: background-color 0.3s ease;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    outline: none;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+
+.background-clip{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+}
+
+@media (min-aspect-ratio:16/9){
+    .background-clip{
+        width: 100%;
+        height: auto;
+    }
+}
+
+@media (max-aspect-ratio:16/9){
+    .background-clip{
+        width: auto;
+        height: 100%;
+    }
+}
+
+/* Add these styles to your existing CSS */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+/* Additional styles to fit better within chatborder */
+#chatlog1 {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Adjustments for headings and table cells */
+h2 {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+td {
+  vertical-align: top;
+  word-wrap: break-word;
+  max-width: 300px; /* Adjust this as needed */
+}
+

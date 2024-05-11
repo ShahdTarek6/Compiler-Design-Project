@@ -3,6 +3,14 @@ function speak(text) {
     var utterance = new SpeechSynthesisUtterance(text);
     synth.speak(utterance);
 }
+function isVariable(token) {
+    // List of keywords and symbols
+    var keywords = ["int", "float", "string", "double", "bool", "char", "for", "while", "if", "do", "return", "break", "continue", "end"];
+    var symbols = ["+", "-", "*", "/", "%", "(", ")", "{", "}", "[", "]", ",", ";", "<", ">", "=", "!", "&&", "||"];
+
+    // Check if token is not in the list of keywords and symbols
+    return !keywords.includes(token) && !symbols.includes(token);
+}
 function scan() {
     var inputCode = document.getElementById("chatbox").value;
     
@@ -43,7 +51,7 @@ function scan() {
         } else if (/^(for|while|if|do|return|break|continue|end)$/.test(token)) {
             categories["<b>Reserved Keywords:</b>"].push(token);
             table += "<tr><td>reserved</td><td>" + token + "</td></tr>";
-        }else if (/^[a-zA-Z]+$/.test(token)) {
+        }else if (isVariable(token)) {
             categories["<b>Variables:</b>"].push(token);
             table += "<tr><td>variable</td><td>" + token + "</td></tr>";
         } else if (token === '|' && tokenList[index + 1] === '|') {
