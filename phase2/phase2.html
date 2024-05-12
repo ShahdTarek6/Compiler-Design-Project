@@ -11,20 +11,20 @@
     <div id='bodybox'>
         <h1> Chatbot Scanner</h1>
         <div id='chatborder'>
-          <p id="chatlog1" class="chatlog">&nbsp;</p>
-          <video autoplay loop muted plays-inline class="background-clip">
-            <source src="back_video.mp4" type="video/mp4">
-        </video>
-          <input type="text" name="chat" id="chatbox" placeholder="Hi there! Type here to talk to me." onfocus="placeholder()">
+            <p id="chatlog1" class="chatlog">&nbsp;</p>
+            <video autoplay loop muted plays-inline class="background-clip">
+                <source src="back_video.mp4" type="video/mp4">
+            </video>
+            <!-- Add a wrapper for the textarea to style it -->
+            <div class="message-box">
+                <textarea name="chat" id="chatbox" placeholder="Hi there! Type here to talk to me." onkeypress="handleKeyPress(event)"></textarea>
+            </div>
         </div>
         <br>
         <br>
         <ul style="list-style-type:disc">
-            <button onclick="scan()">Scan</button>
+            <button onclick="checkIfElseSyntax()">Scan</button>
         </ul>
-       
-      
-        
     <script src="phase2.js"></script>
 </body>
 </html>
