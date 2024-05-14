@@ -3,7 +3,7 @@ function checkIfElseSyntax() {
     var lines = code.split('\n');
     var output = document.getElementById("chatlog1");
     output.innerHTML = ""; // Clear previous content
-
+    var switchStack= [];
     var ifStack = [];
     var elseStack = [];
     var currentBlock = null;
@@ -130,7 +130,14 @@ function checkIfElseSyntax() {
                 output.innerHTML = table + "</table>";
                 return;
             }
+            var tokenList = line.match(/('[^'\n]*')|#.+\n|\b(int|float|string|double|bool|char|for|while|if|do|return|break|continue|end|==|!=|<=|>=|<|>)\b|\b\d+(\.\d+)?\b|[a-zA-Z]+|\S|&&|;/g);
+            if(!isVariable(tokenList[2] || !(/^(\d+(\.\d+)?)$/.test(tokenList[2])))){
+                table += "<tr><td>Missing Variable </td><td>Missing 'number' or 'variable' in switch</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;  
+            }
             switchStack.push('switch');
+            currentBlock = 'switch';
             caseFlag = false;
             defaultFlag = false;
         }
@@ -163,12 +170,15 @@ function checkIfElseSyntax() {
             } else if (currentBlock === 'else') {
                 elseStack.pop();
             }
+            else if (currentBlock === 'switch') {
+                switchStack.pop();
+            }
             currentBlock = null;
         }
     }
 
     // Check if all blocks are closed
-    if (ifStack.length > 0 || elseStack.length > 0 || currentBlock) {
+    if (ifStack.length > 0 || elseStack.length > 0 || switchStack.length > 0||currentBlock) {
         table += "<tr><td>Unclosed Blocks</td><td>Unclosed blocks</td></tr>";
         output.innerHTML = table + "</table>";
         return;
