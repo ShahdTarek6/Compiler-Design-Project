@@ -108,6 +108,47 @@ function checkIfElseSyntax() {
             }
             currentBlock = 'else';
         }
+                // Check for switch statement
+        else if (line.startsWith('switch')) {
+            if (!line.includes('(')) {
+                table += "<tr><td>Missing Parenthesis</td><td>Missing '(' in switch statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            if (!line.includes(')')) {
+                table += "<tr><td>Missing Parenthesis</td><td>Missing ')' in switch statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            if (line.indexOf(')') < line.indexOf('(')) {
+                table += "<tr><td>Incorrect Parenthesis Order</td><td>')' appears before '(' in switch statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            if (!line.includes('{')) {
+                table += "<tr><td>Missing Brace</td><td>Missing '{' in switch statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            switchStack.push('switch');
+            caseFlag = false;
+            defaultFlag = false;
+        }
+        // Check for case statement
+        else if (line.startsWith('case')) {
+            if (switchStack.length === 0) {
+                table += "<tr><td>Unexpected Case</td><td>Case statement outside switch block</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            if (!line.includes(':')) {
+                table += "<tr><td>Missing Colon</td><td>Missing ':' in case statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            caseFlag = true;
+        }
+        
         // Check for '}' to close blocks
         else if (line === '}') {
             // Check if there's a current block to close
