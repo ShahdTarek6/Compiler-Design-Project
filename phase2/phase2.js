@@ -7,7 +7,8 @@ function checkIfElseSyntax() {
     var ifStack = [];
     var elseStack = [];
     var currentBlock = null;
-
+    var caseFlag = false;
+    var defaultFlag = false;
     var table = "<table border='1'><tr><th>Error Type</th><th>Error Message</th></tr>";
 
     for (var i = 0; i < lines.length; i++) {
@@ -168,7 +169,25 @@ function checkIfElseSyntax() {
             }
             caseFlag = true;
         }
-        
+        // Check for default statement
+        else if (line.startsWith('default')) {
+            if (switchStack.length === 0) {
+                table += "<tr><td>Unexpected Default</td><td>Default statement outside switch block</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            if (!line.includes(':')) {
+                table += "<tr><td>Missing Colon</td><td>Missing ':' in default statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            if (defaultFlag) {
+                table += "<tr><td>Multiple Defaults</td><td>Multiple default statements in switch block</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            defaultFlag = true;
+        }
         // Check for '}' to close blocks
         else if (line === '}') {
             // Check if there's a current block to close
