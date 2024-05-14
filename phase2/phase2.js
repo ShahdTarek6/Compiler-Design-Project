@@ -15,7 +15,7 @@ function checkIfElseSyntax() {
         
         // Skip empty lines
         if (line === '') continue;
-        
+        var flagcase=-1;
         // Check for if statement
         if (line.startsWith('if')) {
             var tokenList = line.match(/('[^'\n]*')|#.+\n|\b(int|float|string|double|bool|char|for|while|if|do|return|break|continue|end|==|!=|<=|>=|<|>)\b|\b\d+(\.\d+)?\b|[a-zA-Z]+|\S|&&|;/g);
@@ -143,8 +143,21 @@ function checkIfElseSyntax() {
         }
         // Check for case statement
         else if (line.startsWith('case')) {
+            var tokenList = line.match(/('[^'\n]*')|#.+\n|\b(int|float|string|double|bool|char|for|while|if|case|switch|do|return|break|continue|end|==|!=|<=|>=|<|>)\b|\b\d+(\.\d+)?\b|[a-zA-Z]+|\S|&&|;/g);
             if (switchStack.length === 0) {
                 table += "<tr><td>Unexpected Case</td><td>Case statement outside switch block</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            
+            if((/^(\d+(\.\d+)?)$/.test(tokenList[1]))){
+               flagcase=1;  
+            }
+            else if(isVariable(tokenList[1])){
+                flagcase=1;
+            }
+            if(flagcase!=1){
+                table += "<tr><td>Missing Variable </td><td>Missing 'number' or 'variable' After case </td></tr>";
                 output.innerHTML = table + "</table>";
                 return;
             }
@@ -191,8 +204,8 @@ function checkIfElseSyntax() {
 
 function isVariable(token) {
     // List of keywords and symbols
-    var keywords = ["int", "float", "string", "double", "bool", "char", "for", "while", "if", "do", "return", "break", "continue", "end"];
-    var symbols = ["+", "-", "*", "/", "%", "(", ")", "{", "}", "[", "]", ",", ";", "<", ">", "=", "!", "&&", "||"];
+    var keywords = ["int", "float", "string", "double", "bool", "char", "for", "while", "if", "do", "return", "break", "continue", "end","case","switch"];
+    var symbols = ["+", "-", "*", "/", "%", "(", ")", "{", "}", "[", "]", ",", ";", "<", ">", "=", "!", "&&", "||",":"];
 
     // Check if token is not in the list of keywords and symbols
     return !keywords.includes(token) && !symbols.includes(token);
