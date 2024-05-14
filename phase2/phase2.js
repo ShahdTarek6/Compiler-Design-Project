@@ -25,31 +25,16 @@ function checkIfElseSyntax() {
                 currentBlock = null;
             }
             // Check if if statement is followed by '('
-                        // Check if if statement is followed by '('
             if (!line.includes('(')) {
                 table += "<tr><td>Missing Parenthesis</td><td>Missing '(' in if statement</td></tr>";
                 output.innerHTML = table + "</table>";
                 return;
             }
-
-            // Get the condition part of the line
-            var conditionStartIndex = line.indexOf('(') + 1;
-            var conditionEndIndex = line.indexOf(')');
-            var condition = line.substring(conditionStartIndex, conditionEndIndex).trim();
-
-            // Check if the condition contains a valid operator
-            var operators = ['==', '!=', '<', '>', '<=', '>='];
-            var operatorFound = false;
-            var errorType = "";
-            var errorMessage = "";
-            
-            
-            
+            // check between bracket
             if(!isVariable(tokenList[2] || !(/^(\d+(\.\d+)?)$/.test(tokenList[2])))){
                 table += "<tr><td>Missing Variable </td><td>Missing 'number' or 'variable' before operatin in if statement</td></tr>";
                 output.innerHTML = table + "</table>";
-                return;
-                
+                return;  
             }
             var index=-1;var flag=-1;
             if(isVariable(tokenList[2] || (/^(\d+(\.\d+)?)$/.test(tokenList[2])))){
