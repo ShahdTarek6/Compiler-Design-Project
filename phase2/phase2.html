@@ -15,15 +15,13 @@
             <video autoplay loop muted plays-inline class="background-clip">
                 <source src="back_video.mp4" type="video/mp4">
             </video>
-            <!-- Add a wrapper for the textarea to style it -->
-            <div class="message-box">
-                <textarea name="chat" id="chatbox" placeholder="Hi there! Type here to talk to me." onkeypress="handleKeyPress(event)"></textarea>
-            </div>
+            <textarea name="chat" id="chatbox" placeholder="Hi there! Type here to talk to me." onkeypress="handleKeyPress(event)"></textarea>
+
         </div>
         <br>
         <br>
         <ul style="list-style-type:disc">
-            <button onclick="checkIfElseSyntax()">Scan</button>
+            <button onclick="checkForSyntax()">Scan</button>
         </ul>
     <script src="phase2.js"></script>
 </body>

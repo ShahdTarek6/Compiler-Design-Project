@@ -32,6 +32,7 @@ function scan() {
         "<b>Reserved Keywords:</b>": [],
         "<b>Variables:</b>": [],
         "<b>Symbols:</b>": [],
+        "<b>List:</b>": [],
         "<b>Unknown:</b>": []
     };
 
@@ -51,9 +52,15 @@ function scan() {
         } else if (/^(for|while|if|do|return|break|continue|end)$/.test(token)) {
             categories["<b>Reserved Keywords:</b>"].push(token);
             table += "<tr><td>reserved</td><td>" + token + "</td></tr>";
-        }else if (isVariable(token)) {
+        } else if(isVariable(token)){
+            if (tokenList[index + 1] === '[') {
+                categories["<b>List:</b>"].push(token);
+                table += "<tr><td>list</td><td>" + token + "</td></tr>";
+            } else{
+            // If the token does not match the pattern of a list, treat it as a variable
             categories["<b>Variables:</b>"].push(token);
             table += "<tr><td>variable</td><td>" + token + "</td></tr>";
+            }
         } else if (token === '|' && tokenList[index + 1] === '|') {
             categories["<b>Symbols:</b>"].push(token);
             table += "<tr><td>symbol</td><td>OR ||</td></tr>";

@@ -42,9 +42,11 @@ body {
   
   #chatbox {
     font: 17px arial, sans-serif;
-    height: 22px;
-    width: 100%;
-  }
+    width: 100%; /* Adjust width as needed */
+    min-height: 200px; /* Set a minimum height */
+    resize: vertical; /* Allow vertical resizing */
+}
+
   
   h1 {
     margin: 0; 
