@@ -8,13 +8,11 @@ function checkForSyntax() {
     var lines = code.split(/\r\n|\r|\n/); // Split on all types of line breaks
     var output = document.getElementById("chatlog1");
     output.innerHTML = ""; // Clear previous content
-<<<<<<< HEAD
+
 
 
     var identifiers = ['int', 'float', 'string', 'double', 'bool', 'char'];
     var enteredWords = ['for','if','while','whiledo'];
-=======
->>>>>>> a34a1c9ecb4848d847a222bf1f7ae5d3e8aa7dc7
     var switchStack= [];
     var whileStack = [];
     var ifStack = [];
@@ -22,7 +20,6 @@ function checkForSyntax() {
     var doStack = [];
     var forStack = [];
     var currentBlock = null;
-<<<<<<< HEAD
     var currentBlock1 = null;
     var currentBlock2 = null;
     var currentBlock3 = null;
@@ -31,15 +28,13 @@ function checkForSyntax() {
     var caseFlag = false;
     var defaultFlag = false;
     var flagdoo=0;
-=======
+
     var caseFlag = false;
     var defaultFlag = false;
->>>>>>> a34a1c9ecb4848d847a222bf1f7ae5d3e8aa7dc7
     var table = "<table border='1'><tr><th>Error Type</th><th>Error Message</th></tr>";
     var flagdoo=0;
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i].trim();
-<<<<<<< HEAD
 
         // Skip empty lines
         if (line === '')  
@@ -110,13 +105,11 @@ function checkForSyntax() {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         var flagcase=-1;
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Check if statement
-=======
         
         // Skip empty lines
         if (line === '') continue;
         var flagcase=-1;
         // Check for if statement
->>>>>>> a34a1c9ecb4848d847a222bf1f7ae5d3e8aa7dc7
         if (line.startsWith('if')) {
             var tokenList = line.match(/('[^'\n]*')|#.+\n|\b(int|float|string|double|bool|char|for|while|if|do|return|break|continue|end|==|!=|<=|>=|<|>)\b|\b\d+(\.\d+)?\b|[a-zA-Z]+|\S|&&|;/g);
             // Push current block to stack if not null
@@ -195,11 +188,8 @@ function checkForSyntax() {
                 output.innerHTML = table + "</table>";
                 return;
             }
-<<<<<<< HEAD
             currentBlock1 = 'if';
-=======
             currentBlock = 'if';
->>>>>>> a34a1c9ecb4848d847a222bf1f7ae5d3e8aa7dc7
 
         }
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Check else statement
@@ -212,14 +202,15 @@ function checkForSyntax() {
             }
             currentBlock4 = 'else';
         }
-<<<<<<< HEAD
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Check switch statement
         else if (line.startsWith('switch')) {
             if (!line.includes('(')) {
                 table += "<tr><td>Missing Parenthesis</td><td>Missing '(' in switch statement</td></tr>";
-=======
+                output.innerHTML = table + "</table>";
+                return;
+            }
                 // Check for switch statement
-        else if (line.startsWith('switch')) {
+              else if (line.startsWith('switch')) {
             if (!line.includes('(')) {
                 table += "<tr><td>Missing Parenthesis</td><td>Missing '(' in switch statement</td></tr>";
                 output.innerHTML = table + "</table>";
@@ -716,7 +707,6 @@ function checkForSyntax() {
             // Check if there's a current block to close
             if (!currentBlock) {
                 table += "<tr><td>Unexpected Brace</td><td>Unexpected '}'</td></tr>";
->>>>>>> a34a1c9ecb4848d847a222bf1f7ae5d3e8aa7dc7
                 output.innerHTML = table + "</table>";
                 return;
             }
@@ -725,7 +715,6 @@ function checkForSyntax() {
                 output.innerHTML = table + "</table>";
                 return;
             }
-<<<<<<< HEAD
             if (line.indexOf(')') < line.indexOf('(')) {
                 table += "<tr><td>Incorrect Parenthesis Order</td><td>')' appears before '(' in switch statement</td></tr>";
                 output.innerHTML = table + "</table>";
@@ -740,13 +729,10 @@ function checkForSyntax() {
             if(!isVariable(tokenList[2] || !(/^(\d+(\.\d+)?)$/.test(tokenList[2])))){
                 table += "<tr><td>Missing Variable </td><td>Missing 'number' or 'variable' in switch</td></tr>";
                 output.innerHTML = table + "</table>";
+                switchStack.push('switch');
                 return;  
+                
             }
-            switchStack.push('switch');
-            currentBlock5 = 'switch';
-            caseFlag = false;
-            defaultFlag = false;
-=======
             else if (currentBlock === 'switch') {
                 switchStack.pop();
             }
@@ -760,7 +746,6 @@ function checkForSyntax() {
                 forStack.pop();
             }
             currentBlock = null;
->>>>>>> a34a1c9ecb4848d847a222bf1f7ae5d3e8aa7dc7
         }
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Check case statement
         else if (line.startsWith('case')) {
@@ -1257,16 +1242,13 @@ function checkForSyntax() {
     }
 
     // Check if all blocks are closed
-<<<<<<< HEAD
+
     //if (ifStack.length > 0 || elseStack.length > 0 || switchStack.length > 0||doStack.length>0||whileStack.length>0||forStack.length>0||currentBlock) {
     //    table += "<tr><td>Unclosed Blocks</td><td>Unclosed blocks</td></tr>";
     //    output.innerHTML = table + "</table>";
     //    return;
     //}
-         
-      
     table += "<tr><td colspan='2'>No Errors</td></tr>";
-=======
     if (ifStack.length > 0 || elseStack.length > 0 || switchStack.length > 0||doStack.length>0||whileStack.length>0||forStack.length>0||currentBlock) {
         table += "<tr><td>Unclosed Blocks</td><td>Unclosed blocks</td></tr>";
         output.innerHTML = table + "</table>";
@@ -1275,7 +1257,7 @@ function checkForSyntax() {
     
     // No errors
     table += "<tr><td>NO ERROR</td></tr>";
->>>>>>> a34a1c9ecb4848d847a222bf1f7ae5d3e8aa7dc7
+
     output.innerHTML = table + "</table>";
 }
 
@@ -1287,7 +1269,7 @@ function isVariable(token) {
     // Check if token is not in the list of keywords and symbols
     return !keywords.includes(token) && !symbols.includes(token);
 }
-<<<<<<< HEAD
+
 
 
 function isValidAssignment(variableType, assignedValue) {
@@ -1308,5 +1290,4 @@ function isValidAssignment(variableType, assignedValue) {
             return false;
     }
 }
-=======
->>>>>>> a34a1c9ecb4848d847a222bf1f7ae5d3e8aa7dc7
+}
