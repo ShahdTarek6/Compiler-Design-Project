@@ -8,10 +8,13 @@ function checkForSyntax() {
     var lines = code.split(/\r\n|\r|\n/); // Split on all types of line breaks
     var output = document.getElementById("chatlog1");
     output.innerHTML = ""; // Clear previous content
+<<<<<<< HEAD
 
 
     var identifiers = ['int', 'float', 'string', 'double', 'bool', 'char'];
     var enteredWords = ['for','if','while','whiledo'];
+=======
+>>>>>>> a34a1c9ecb4848d847a222bf1f7ae5d3e8aa7dc7
     var switchStack= [];
     var whileStack = [];
     var ifStack = [];
@@ -19,6 +22,7 @@ function checkForSyntax() {
     var doStack = [];
     var forStack = [];
     var currentBlock = null;
+<<<<<<< HEAD
     var currentBlock1 = null;
     var currentBlock2 = null;
     var currentBlock3 = null;
@@ -27,10 +31,15 @@ function checkForSyntax() {
     var caseFlag = false;
     var defaultFlag = false;
     var flagdoo=0;
+=======
+    var caseFlag = false;
+    var defaultFlag = false;
+>>>>>>> a34a1c9ecb4848d847a222bf1f7ae5d3e8aa7dc7
     var table = "<table border='1'><tr><th>Error Type</th><th>Error Message</th></tr>";
-
+    var flagdoo=0;
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i].trim();
+<<<<<<< HEAD
 
         // Skip empty lines
         if (line === '')  
@@ -101,6 +110,13 @@ function checkForSyntax() {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         var flagcase=-1;
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Check if statement
+=======
+        
+        // Skip empty lines
+        if (line === '') continue;
+        var flagcase=-1;
+        // Check for if statement
+>>>>>>> a34a1c9ecb4848d847a222bf1f7ae5d3e8aa7dc7
         if (line.startsWith('if')) {
             var tokenList = line.match(/('[^'\n]*')|#.+\n|\b(int|float|string|double|bool|char|for|while|if|do|return|break|continue|end|==|!=|<=|>=|<|>)\b|\b\d+(\.\d+)?\b|[a-zA-Z]+|\S|&&|;/g);
             // Push current block to stack if not null
@@ -179,7 +195,11 @@ function checkForSyntax() {
                 output.innerHTML = table + "</table>";
                 return;
             }
+<<<<<<< HEAD
             currentBlock1 = 'if';
+=======
+            currentBlock = 'if';
+>>>>>>> a34a1c9ecb4848d847a222bf1f7ae5d3e8aa7dc7
 
         }
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Check else statement
@@ -192,7 +212,13 @@ function checkForSyntax() {
             }
             currentBlock4 = 'else';
         }
+<<<<<<< HEAD
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Check switch statement
+        else if (line.startsWith('switch')) {
+            if (!line.includes('(')) {
+                table += "<tr><td>Missing Parenthesis</td><td>Missing '(' in switch statement</td></tr>";
+=======
+                // Check for switch statement
         else if (line.startsWith('switch')) {
             if (!line.includes('(')) {
                 table += "<tr><td>Missing Parenthesis</td><td>Missing '(' in switch statement</td></tr>";
@@ -221,9 +247,520 @@ function checkForSyntax() {
                 return;  
             }
             switchStack.push('switch');
+            currentBlock = 'switch';
+            caseFlag = false;
+            defaultFlag = false;
+        }
+        // Check for case statement
+        else if (line.startsWith('case')) {
+            var tokenList = line.match(/('[^'\n]*')|#.+\n|\b(int|float|string|double|bool|char|for|while|if|case|switch|do|return|break|continue|end|==|!=|<=|>=|<|>)\b|\b\d+(\.\d+)?\b|[a-zA-Z]+|\S|&&|;/g);
+            if (switchStack.length === 0) {
+                table += "<tr><td>Unexpected Case</td><td>Case statement outside switch block</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            
+            if((/^(\d+(\.\d+)?)$/.test(tokenList[1]))){
+               flagcase=1;  
+            }
+            else if(isVariable(tokenList[1])){
+                flagcase=1;
+            }
+            if(flagcase!=1){
+                table += "<tr><td>Missing Variable </td><td>Missing 'number' or 'variable' After case </td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            if (!line.includes(':')) {
+                table += "<tr><td>Missing Colon</td><td>Missing ':' in case statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            caseFlag = true;
+        }
+        // Check for default statement
+        else if (line.startsWith('default')) {
+            if (switchStack.length === 0) {
+                table += "<tr><td>Unexpected Default</td><td>Default statement outside switch block</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            if (!line.includes(':')) {
+                table += "<tr><td>Missing Colon</td><td>Missing ':' in default statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            if (defaultFlag) {
+                table += "<tr><td>Multiple Defaults</td><td>Multiple default statements in switch block</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            defaultFlag = true;
+        }
+        else if (line.startsWith('while')&& flagdoo===0) {
+            var tokenList = line.match(/('[^'\n]*')|#.+\n|\b(int|float|string|double|bool|char|for|while|if|do|return|break|continue|end|==|!=|<=|>=|<|>)\b|\b\d+(\.\d+)?\b|[a-zA-Z]+|\S|&&|;/g);
+            // Push current block to stack if not null
+            if (currentBlock) {
+                whileStack.push(currentBlock);
+                currentBlock = null;
+            }
+            // Check if if statement is followed by '('
+            if (!line.includes('(')) {
+                table += "<tr><td>Missing Parenthesis</td><td>Missing '(' in while statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            // check between bracket
+            if(!isVariable(tokenList[2] || !(/^(\d+(\.\d+)?)$/.test(tokenList[2])))){
+                table += "<tr><td>Missing Variable </td><td>Missing 'number' or 'variable' before operatin in while statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;  
+            }
+            var index=-1;var flag=-1;
+            if(isVariable(tokenList[2] || (/^(\d+(\.\d+)?)$/.test(tokenList[2])))){
+                    
+                if ((tokenList[3]=='!'&&tokenList[4]=='=')) {
+                    index=4;
+                    flag=1;
+                }
+                else if((tokenList[3]=='='&&tokenList[4]=='=')){
+                    index=4;
+                    flag=1
+                }
+                else if(tokenList[3]=='>'||tokenList[3]=='<'){
+                   flag=1;
+                }
+                if(flag!=1){
+                    table += "<tr><td>Missing Operation</td><td>1-Missing '==', '!=', '<', '>', '<=', '>=' in while statement</td></tr>"+tokenList[4];
+                    output.innerHTML = table + "</table>";
+                    return;
+                }
+                else if(tokenList[4]=='='){
+                    index=4;
+                }
+                if(index==4){
+                    if(!isVariable(tokenList[5] || !(/^(\d+(\.\d+)?)$/.test(tokenList[5])))){
+                        table += "<tr><td>Missing Variable </td><td>Missing 'number' or 'variable' after operation in while statement</td></tr>";
+                        output.innerHTML = table + "</table>";
+                        return;
+                        
+                    }
+                }
+                else{
+                    if(!isVariable(tokenList[4] || !(/^(\d+(\.\d+)?)$/.test(tokenList[4])))){
+                        table += "<tr><td>Missing Variable </td><td>Missing 'number' or 'variable' after operation in while statement</td></tr>";
+                        output.innerHTML = table + "</table>";
+                        return;
+                        
+                    }
+                }
+                
+            }
+            if (!line.includes(')')) {
+                table += "<tr><td>Missing Parenthesis</td><td>Missing ')' in while statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+
+            // Check if closed parenthesis appears before open parenthesis
+            if (line.indexOf(')') < line.indexOf('(')) {
+                table += "<tr><td>Incorrect Parenthesis Order</td><td>')' appears before '(' in while statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+
+            // Check if if statement is followed by '{'
+            if (!line.includes('{')) {
+                table += "<tr><td>Missing Brace</td><td>Missing '{' in while statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            currentBlock = 'while';
+
+        }
+        else if (line.startsWith('while')) {
+            if(flagdoo===0){
+                table += "<tr><td>Missing</td><td>Missing while in do statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            else{
+                var tokenList = line.match(/('[^'\n]*')|#.+\n|\b(int|float|string|double|bool|char|for|while|if|do|return|break|continue|end|==|!=|<=|>=|<|>)\b|\b\d+(\.\d+)?\b|[a-zA-Z]+|\S|&&|;/g);
+            
+            // Check if if statement is followed by '('
+            if (!line.includes('(')) {
+                table += "<tr><td>Missing Parenthesis</td><td>Missing '(' in if statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            // check between bracket
+            if(!isVariable(tokenList[2] || !(/^(\d+(\.\d+)?)$/.test(tokenList[2])))){
+                table += "<tr><td>Missing Variable </td><td>Missing 'number' or 'variable' before operatin in if statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;  
+            }
+            var index=-1;var flag=-1;
+            if(isVariable(tokenList[2] || (/^(\d+(\.\d+)?)$/.test(tokenList[2])))){
+                    
+                if ((tokenList[3]=='!'&&tokenList[4]=='=')) {
+                    index=4;
+                    flag=1;
+                }
+                else if((tokenList[3]=='='&&tokenList[4]=='=')){
+                    index=4;
+                    flag=1
+                }
+                else if(tokenList[3]=='>'||tokenList[3]=='<'){
+                   flag=1;
+                }
+                if(flag!=1){
+                    table += "<tr><td>Missing Operation</td><td>1-Missing '==', '!=', '<', '>', '<=', '>=' in if statement</td></tr>"+tokenList[4];
+                    output.innerHTML = table + "</table>";
+                    return;
+                }
+                else if(tokenList[4]=='='){
+                    index=4;
+                }
+                if(index==4){
+                    if(!isVariable(tokenList[5] || !(/^(\d+(\.\d+)?)$/.test(tokenList[5])))){
+                        table += "<tr><td>Missing Variable </td><td>Missing 'number' or 'variable' after operation in if statement</td></tr>";
+                        output.innerHTML = table + "</table>";
+                        return;
+                        
+                    }
+                }
+                else{
+                    if(!isVariable(tokenList[4] || !(/^(\d+(\.\d+)?)$/.test(tokenList[4])))){
+                        table += "<tr><td>Missing Variable </td><td>Missing 'number' or 'variable' after operation in if statement</td></tr>";
+                        output.innerHTML = table + "</table>";
+                        return;
+                        
+                    }
+                }
+                
+            }
+            if (!line.includes(')')) {
+                table += "<tr><td>Missing Parenthesis</td><td>Missing ')' in if statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+
+            // Check if closed parenthesis appears before open parenthesis
+            if (line.indexOf(')') < line.indexOf('(')) {
+                table += "<tr><td>Incorrect Parenthesis Order</td><td>')' appears before '(' in if statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+
+            
+            }
+        }
+        // Check for do statement
+        else if (line.startsWith('do')) {
+            flagdoo=1;
+            // Check if do statement is followed by '{'
+            if (!line.includes('{')) {
+                table += "<tr><td>Missing Brace</td><td>Missing '{' in do statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            doStack.push('do');
+            currentBlock = 'do';
+            
+        }
+        // Check for for 
+         // Check for for statement
+        else if(line.startsWith('for')){
+            if (!line.includes('(')) {
+                table += "<tr><td>Missing Parenthesis</td><td>Missing '(' in for statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            if (!line.includes(')')) {
+                table += "<tr><td>Missing Parenthesis</td><td>Missing ')' in for statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            if (line.indexOf(')') < line.indexOf('(')) {
+                table += "<tr><td>Incorrect Parenthesis Order</td><td>')' appears before '(' in for statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            var tokenList = line.match(/('[^'\n]*')|#.+\n|\b(int|float|string|double|bool|char|for|while|if|do|return|break|continue|end|==|!=|<=|>=|<|>|&&|\+|-)\b|\b\d+(\.\d+)?\b|[a-zA-Z]+|\S|;/g);
+            // for (initialization; condition; increment/decrement)
+            if(tokenList[2]!='int'){
+                table += "<tr><td>Missing Initialization</td><td>Missing initialization part in for statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            if(tokenList[2]=='int'){
+                if(!isVariable(tokenList[3]) ){
+                    table += "<tr><td>Missing Variable </td><td>Missing Variable after initialization part in for statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+                }
+            }
+            if(tokenList[2]=='int'){
+                if(isVariable(tokenList[3]) ){
+                    if(tokenList[4]!='='){
+                        table += "<tr><td>Missing Operation</td><td>Missing = part in for statement</td></tr>";
+                        output.innerHTML = table + "</table>";
+                        return;
+                    }
+                }
+            }
+            if(tokenList[2]=='int'){
+                if(isVariable(tokenList[3]) ){
+                    if(tokenList[4]=='='){
+                        if(!(/^(\d+(\.\d+)?)$/.test(tokenList[5]))){
+                            table += "<tr><td>Missing number</td><td>Missing number after = part in for statement</td></tr>";
+                            output.innerHTML = table + "</table>";
+                            return;
+                        }
+                    }
+                }
+            }
+            if(tokenList[2]=='int'){
+                if(isVariable(tokenList[3]) ){
+                    if(tokenList[4]=='='){
+                        if((/^(\d+(\.\d+)?)$/.test(tokenList[5]))){
+                            if(tokenList[6]!=';'){
+                                table += "<tr><td>Missing ;</td><td>Missing ; before condition part in for statement</td></tr>";
+                                output.innerHTML = table + "</table>";
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+            if(tokenList[2]=='int'){
+                if(isVariable(tokenList[3]) ){
+                    if(tokenList[4]=='='){
+                        if((/^(\d+(\.\d+)?)$/.test(tokenList[5]))){
+                            if(tokenList[6]==';'){
+                               // check between bracket
+                                if(!isVariable(tokenList[7] || !(/^(\d+(\.\d+)?)$/.test(tokenList[7])))){
+                                    table += "<tr><td>Missing Variable </td><td>Missing 'number' or 'variable' before operatin in if statement</td></tr>";
+                                    output.innerHTML = table + "</table>";
+                                    return;  
+                                }
+                                var index=-1;var flag=-1;
+                                if(isVariable(tokenList[7] || (/^(\d+(\.\d+)?)$/.test(tokenList[7])))){
+                                        
+                                    if ((tokenList[8]=='!'&&tokenList[9]=='=')) {
+                                        index=4;
+                                        flag=1;
+                                    }
+                                    else if((tokenList[8]=='='&&tokenList[9]=='=')){
+                                        index=4;
+                                        flag=1
+                                    }
+                                    else if(tokenList[8]=='>'||tokenList[9]=='<'){
+                                    flag=1;
+                                    }
+                                    if(flag!=1){
+                                        table += "<tr><td>Missing Operation</td><td>1-Missing '==', '!=', '<', '>', '<=', '>=' in if statement</td></tr>"+tokenList[4];
+                                        output.innerHTML = table + "</table>";
+                                        return;
+                                    }
+                                    else if(tokenList[9]=='='){
+                                        index=4;
+                                    }
+                                    if(index==4){
+                                        if(!isVariable(tokenList[10] || !(/^(\d+(\.\d+)?)$/.test(tokenList[10])))){
+                                            table += "<tr><td>Missing Variable </td><td>Missing 'number' or 'variable' after operation in if statement</td></tr>";
+                                            output.innerHTML = table + "</table>";
+                                            return;
+                                            
+                                        }
+                                    }
+                                    else{
+                                        if(!isVariable(tokenList[9] || !(/^(\d+(\.\d+)?)$/.test(tokenList[9])))){
+                                            table += "<tr><td>Missing Variable </td><td>Missing 'number' or 'variable' after operation in if statement</td></tr>";
+                                            output.innerHTML = table + "</table>";
+                                            return;
+                                            
+                                        }
+                                    }
+                
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if(tokenList[2]=='int'){
+                if(isVariable(tokenList[3]) ){
+                    if(tokenList[4]=='='){
+                        if((/^(\d+(\.\d+)?)$/.test(tokenList[5]))){
+                            if(tokenList[6]==';'){
+                                if(isVariable(tokenList[7] || (/^(\d+(\.\d+)?)$/.test(tokenList[7])))){
+                                        
+                                    if ((tokenList[8]=='!'&&tokenList[9]=='=')) {
+                                        index=4;
+                                        flag=1;
+                                    }
+                                    else if((tokenList[8]=='='&&tokenList[9]=='=')){
+                                        index=4;
+                                        flag=1
+                                    }
+                                    else if(tokenList[8]=='>'||tokenList[9]=='<'){
+                                    flag=1;
+                                    }
+                                    if(flag!=1){
+                                        table += "<tr><td>Missing Operation</td><td>1-Missing '==', '!=', '<', '>', '<=', '>=' in if statement</td></tr>"+tokenList[4];
+                                        output.innerHTML = table + "</table>";
+                                        return;
+                                    }
+                                    else if(tokenList[9]=='='){
+                                        index=4;
+                                    }
+                                    if(index==4){
+                                        if(isVariable(tokenList[10] || (/^(\d+(\.\d+)?)$/.test(tokenList[10])))){
+                                            if(tokenList[11]!=';'){
+                                                table += "<tr><td>Missing ; </td><td>Missing ;</td></tr>";
+                                                output.innerHTML = table + "</table>";
+                                                return;
+                                            }
+                                            
+                                        }
+                                    }
+                                    else{
+                                        if(!isVariable(tokenList[9] || !(/^(\d+(\.\d+)?)$/.test(tokenList[9])))){
+                                            if(tokenList[10]!=';'){
+                                                table += "<tr><td>Missing ; </td><td>Missing ;</td></tr>";
+                                                output.innerHTML = table + "</table>";
+                                                return;
+                                            }
+                                            
+                                        }
+                                    }
+                
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if(tokenList[2]=='int'){
+                if(isVariable(tokenList[3]) ){
+                    if(tokenList[4]=='='){
+                        if((/^(\d+(\.\d+)?)$/.test(tokenList[5]))){
+                            if(tokenList[6]==';'){
+                                if(isVariable(tokenList[7] || (/^(\d+(\.\d+)?)$/.test(tokenList[7])))){
+                                        
+                                    if ((tokenList[8]=='!'&&tokenList[9]=='=')) {
+                                        index=4;
+                                        flag=1;
+                                    }
+                                    else if((tokenList[8]=='='&&tokenList[9]=='=')){
+                                        index=4;
+                                        flag=1
+                                    }
+                                    else if(tokenList[8]=='>'||tokenList[9]=='<'){
+                                    flag=1;
+                                    }
+                                    if(flag!=1){
+                                        table += "<tr><td>Missing Operation</td><td>1-Missing '==', '!=', '<', '>', '<=', '>=' in if statement</td></tr>"+tokenList[4];
+                                        output.innerHTML = table + "</table>";
+                                        return;
+                                    }
+                                    else if(tokenList[9]=='='){
+                                        index=4;
+                                    }
+                                    if(index==4){
+                                        if(isVariable(tokenList[10] || (/^(\d+(\.\d+)?)$/.test(tokenList[10])))){
+                                            if(tokenList[11]==';'){
+                                                
+                                                if(tokenList[12]!=tokenList[3]||tokenList[13]!='+'||tokenList[14]!='+'){
+                                                    table += "<tr><td>Missing Increment</td><td>Missing increment part in for statement</td></tr>";
+                                                    output.innerHTML = table + "</table>";
+                                                    return;
+
+                                                }
+                                            }
+                                            
+                                        }
+                                    }
+                                    else{
+                                        if(!isVariable(tokenList[9] || !(/^(\d+(\.\d+)?)$/.test(tokenList[9])))){
+                                            if(tokenList[10]==';'){
+                                                if(tokenList[11]!=tokenList[3]||tokenList[12]!='-'||tokenList[13]!='-'){
+                                                    table += "<tr><td>Missing Increment</td><td>Missing increment part in for statement</td></tr>";
+                                                    output.innerHTML = table + "</table>";
+                                                    return;
+
+                                                }
+                                            }
+                                            
+                                        }
+                                    }
+                
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (!line.includes('{')) {
+                table += "<tr><td>Missing Brace</td><td>Missing '{' in for statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            forStack.push('for');
+            currentBlock = 'for';
+        }
+        
+        // Check for '}' to close blocks
+        else if (line === '}') {
+            // Check if there's a current block to close
+            if (!currentBlock) {
+                table += "<tr><td>Unexpected Brace</td><td>Unexpected '}'</td></tr>";
+>>>>>>> a34a1c9ecb4848d847a222bf1f7ae5d3e8aa7dc7
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            if (!line.includes(')')) {
+                table += "<tr><td>Missing Parenthesis</td><td>Missing ')' in switch statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+<<<<<<< HEAD
+            if (line.indexOf(')') < line.indexOf('(')) {
+                table += "<tr><td>Incorrect Parenthesis Order</td><td>')' appears before '(' in switch statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            if (!line.includes('{')) {
+                table += "<tr><td>Missing Brace</td><td>Missing '{' in switch statement</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;
+            }
+            var tokenList = line.match(/('[^'\n]*')|#.+\n|\b(int|float|string|double|bool|char|for|while|if|do|return|break|continue|end|==|!=|<=|>=|<|>)\b|\b\d+(\.\d+)?\b|[a-zA-Z]+|\S|&&|;/g);
+            if(!isVariable(tokenList[2] || !(/^(\d+(\.\d+)?)$/.test(tokenList[2])))){
+                table += "<tr><td>Missing Variable </td><td>Missing 'number' or 'variable' in switch</td></tr>";
+                output.innerHTML = table + "</table>";
+                return;  
+            }
+            switchStack.push('switch');
             currentBlock5 = 'switch';
             caseFlag = false;
             defaultFlag = false;
+=======
+            else if (currentBlock === 'switch') {
+                switchStack.pop();
+            }
+            else if (currentBlock === 'do') {
+                doStack.pop();
+            }
+            else if(currentBlock === 'while'){
+                whileStack.pop();
+            }
+            else if(currentBlock === 'for'){
+                forStack.pop();
+            }
+            currentBlock = null;
+>>>>>>> a34a1c9ecb4848d847a222bf1f7ae5d3e8aa7dc7
         }
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Check case statement
         else if (line.startsWith('case')) {
@@ -720,6 +1257,7 @@ function checkForSyntax() {
     }
 
     // Check if all blocks are closed
+<<<<<<< HEAD
     //if (ifStack.length > 0 || elseStack.length > 0 || switchStack.length > 0||doStack.length>0||whileStack.length>0||forStack.length>0||currentBlock) {
     //    table += "<tr><td>Unclosed Blocks</td><td>Unclosed blocks</td></tr>";
     //    output.innerHTML = table + "</table>";
@@ -728,6 +1266,16 @@ function checkForSyntax() {
          
       
     table += "<tr><td colspan='2'>No Errors</td></tr>";
+=======
+    if (ifStack.length > 0 || elseStack.length > 0 || switchStack.length > 0||doStack.length>0||whileStack.length>0||forStack.length>0||currentBlock) {
+        table += "<tr><td>Unclosed Blocks</td><td>Unclosed blocks</td></tr>";
+        output.innerHTML = table + "</table>";
+        return;
+    }
+    
+    // No errors
+    table += "<tr><td>NO ERROR</td></tr>";
+>>>>>>> a34a1c9ecb4848d847a222bf1f7ae5d3e8aa7dc7
     output.innerHTML = table + "</table>";
 }
 
@@ -739,6 +1287,7 @@ function isVariable(token) {
     // Check if token is not in the list of keywords and symbols
     return !keywords.includes(token) && !symbols.includes(token);
 }
+<<<<<<< HEAD
 
 
 function isValidAssignment(variableType, assignedValue) {
@@ -759,3 +1308,5 @@ function isValidAssignment(variableType, assignedValue) {
             return false;
     }
 }
+=======
+>>>>>>> a34a1c9ecb4848d847a222bf1f7ae5d3e8aa7dc7
